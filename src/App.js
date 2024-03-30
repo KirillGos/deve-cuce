@@ -5,15 +5,14 @@ const DeveCuceOyunu = () => {
   const [score, setScore] = useState(0); // Puan
   const [userInput, setUserInput] = useState(""); // Kullanıcının girişi
   const [color, changeColor] = useState("");
+  const [disabled, changeDisable] = useState(false);
+
   // Her 2 saniyede bir yeni hedef belirleme
   useEffect(() => {
     const interval = setInterval(() => {
       setTarget(Math.random() < 0.5 ? "Deve" : "Cüce");
-      const deve = document.querySelector('#deve');
-      const cuce = document.querySelector('#cuce');
-      deve.disabled = false;
-      cuce.disabled = false;
       changeColor(randomColor());
+      changeDisable(false)
     }, 2000);
 
     return () => clearInterval(interval);
@@ -31,10 +30,7 @@ const DeveCuceOyunu = () => {
     const input = event.target.dataset.name;
     if (input === "Deve" || input === "Cüce") {
       setUserInput(input);
-      const deve = document.querySelector('#deve');
-      const cuce = document.querySelector('#cuce');
-      deve.disabled = true;
-      cuce.disabled = true;
+      changeDisable(true)
     }
   };
 
@@ -55,8 +51,8 @@ const DeveCuceOyunu = () => {
       <h1>Deve Cüce Oyunu</h1>
       <p id="hedef">Hedef: {target}</p>
       <p>Puan: {score}</p>
-      <button id="deve" data-name="Deve" className="btn btn-secondary m-2" onClick={handleClick} >Deve</button>
-      <button id="cuce" data-name="Cüce" className="btn btn-secondary" onClick={handleClick}>Cüce</button>
+      <button data-name="Deve" className="btn btn-secondary m-2" onClick={handleClick} disabled={disabled} >Deve</button>
+      <button data-name="Cüce" className="btn btn-secondary" onClick={handleClick} disabled={disabled}>Cüce</button>
     </div>
   );
 };
